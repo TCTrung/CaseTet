@@ -42,6 +42,7 @@ const Home = () => {
 
             <div className="d-flex justify-content-between align-items-center">
                 <Link to="/products/create" className="btn btn-success">Thêm sản phẩm mới</Link>
+                <Link to="/categories" className="btn btn-success">Danh sách thể loại</Link>
                 <div className="mb-3 d-flex align-items-center">
                     <input type="text" placeholder="Nhập tên sản phẩm" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
                     <button className="btn btn-sm btn-danger ml-2" onClick={handleSearch}>Tìm kiếm</button>
@@ -56,25 +57,29 @@ const Home = () => {
                         <th>Mô tả</th>
                         <th>Giá</th>
                         <th>Thể loại</th>
+                        <th>Ảnh</th>
+                        <th>Thao tác</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {
-                        products.map((product, index) => (
-                            <tr key={index}>
-                                <td>{index + 1}</td>
-                                <td><Link to={`/products/read/${product.id}`}>{product.productName}</Link></td>
-                                <td>{product.description}</td>
-                                <td>{product.price}</td>
-                                <td>{product.category.name}</td>
-
-                                <td>
-                                    <Link to={`/products/update/${product.id}`} className='btn btn-sm btn-primary me-2'>Sửa</Link>
-                                    <button className='btn btn-sm btn-danger' onClick={() => handleDelete(product.id)}>Xóa</button>
-                                </td>
-                            </tr>
-                        ))
-                    }
+                    {products.map((product, index) => (
+                        <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>
+                                <Link to={`/products/read/${product.id}`}>{product.productName}</Link>
+                            </td>
+                            <td>{product.description}</td>
+                            <td>{product.price}</td>
+                            <td>{product.category.name}</td>
+                            <td>
+                                <img src={product.image} alt={product.productName} style={{ width: '100px' }} />
+                            </td>
+                            <td>
+                                <Link to={`/products/update/${product.id}`} className='btn btn-sm btn-primary me-2'>Sửa</Link>
+                                <button className='btn btn-sm btn-danger' onClick={() => handleDelete(product.id)}>Xóa</button>
+                            </td>
+                        </tr>
+                    ))}
                     </tbody>
                 </table>
             </div>

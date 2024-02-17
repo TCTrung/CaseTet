@@ -7,22 +7,22 @@ function Update() {
         productName: '',
         description: '',
         price: '',
-        category: '' // Thêm trường category vào state của sản phẩm
+        category: '',
+        image: '' // Thêm trường image vào state của sản phẩm
     });
 
-    const [categories, setCategories] = useState([]); // State để lưu danh sách thể loại
+    const [categories, setCategories] = useState([]);
+    const [selectedFile, setSelectedFile] = useState(null); // State để lưu file ảnh mới
     const { id } = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Lấy thông tin sản phẩm
         axios.get(`http://localhost:8080/${id}`)
             .then(res => {
                 setProduct(res.data);
             })
             .catch(err => console.error(err));
 
-        // Lấy danh sách thể loại
         axios.get('http://localhost:8080/categories')
             .then(res => {
                 setCategories(res.data);
@@ -30,23 +30,37 @@ function Update() {
             .catch(err => console.error(err));
     }, [id]);
 
-    const handleUpdate = (event) => {
+    const handleUpdate = async (event) => {
         event.preventDefault();
-        const productUp = {
-            ...product,
-            category: { id: product.category } // Chuyển đổi category sang đối tượng Category
-        };
-        axios.put(`http://localhost:8080/editProduct/${id}`, productUp)
-            .then(res => {
-                navigate("/products");
-            })
-            .catch(err => console.log(err));
+
+        const formData = new FormData();
+        formData.append('file', selectedFile); // Thêm file ảnh vào formData nếu có
+        formData.append('productName', product.productName);
+        formData.append('description', product.description);
+        formData.append('price', product.price);
+        formData.append('category', product.category);
+        formData.append('image', product.image); // Thêm trường image vào formData
+
+        try {
+            const res = await axios.put(`http://localhost:8080/editProduct/${id}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            navigate("/products");
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     const handleChange = (event) => {
         const { name, value } = event.target;
         setProduct({ ...product, [name]: value });
     }
+
+    const handleFileChange = (event) => {
+        setSelectedFile(event.target.files[0]);
+    };
 
     return (
         <div className='d-flex w-100 vh-100 justify-content-center align-items-center'>
@@ -73,6 +87,13 @@ function Update() {
                                value={product.price}
                                onChange={handleChange}
                         />
+                    </div>
+                    <div>
+                        <label htmlFor="image">Ảnh sản phẩm:</label>
+                        <input type="file" name='image' className='form-control'
+                               onChange={handleFileChange}
+                        />
+                        {product.image && <img src={product.image} alt="Product" style={{ maxWidth: '200px', marginTop: '10px' }} />}
                     </div>
                     <div>
                         <label htmlFor="category">Thể loại:</label>

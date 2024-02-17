@@ -1,22 +1,21 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from "axios";
-import {Link, useParams} from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 function Infor() {
-    const [product, setProduct] = useState([]);
+    const [product, setProduct] = useState({});
     const [category, setCategory] = useState({});
 
-    const {id} = useParams();
+    const { id } = useParams();
+
     useEffect(() => {
-        axios.get('http://localhost:8080/' + id)
+        axios.get(`http://localhost:8080/${id}`)
             .then(res => {
-                console.log(res);
                 setProduct(res.data);
                 setCategory(res.data.category);
             })
             .catch(err => console.error(err))
-    }, [])
-
+    }, [id]);
 
     return (
         <div className='d-flex w-100 vh-100 justify-content-center align-items-center'>
@@ -27,21 +26,21 @@ function Infor() {
                         <label htmlFor="productName">Tên sản phẩm:</label>
                         <input type="text" name='productName' className='form-control'
                                value={product.productName}
-                               disabled={product.productName}
+                               disabled
                         />
                     </div>
                     <div>
                         <label htmlFor="description">Thông tin:</label>
                         <input type="text" name='description' className='form-control'
                                value={product.description}
-                               disabled={product.description}
+                               disabled
                         />
                     </div>
                     <div>
                         <label htmlFor="price">Giá:</label>
                         <input type="number" name='price' className='form-control'
                                value={product.price}
-                               disabled={product.price}
+                               disabled
                         />
                     </div>
                     <div>
@@ -50,6 +49,11 @@ function Infor() {
                                value={category.name}
                                disabled
                         />
+                    </div>
+                    <div>
+                        <label>Ảnh:</label>
+                        <br />
+                        {product.image && <img src={product.image} alt="Product" style={{ maxWidth: '60%' }} />}
                     </div>
 
                     <Link to={`/products/update/${id}`} className='btn btn-info'>Edit</Link>

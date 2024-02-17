@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -7,15 +7,14 @@ function Create() {
         productName: '',
         description: '',
         price: '',
-        category: '' // Thêm trường category vào state
+        category: ''
     });
 
-    const [categories, setCategories] = useState([]); // Danh sách thể loại
-
+    const [selectedFile, setSelectedFile] = useState(null); // Thêm state để lưu trữ file ảnh được chọn
+    const [categories, setCategories] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Fetch danh sách các thể loại từ backend khi component được render
         axios.get('http://localhost:8080/categories')
             .then(response => {
                 setCategories(response.data);
@@ -25,24 +24,40 @@ function Create() {
             });
     }, []);
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        const productData = {
-            ...values,
-            category: { id: values.category } // Chuyển đổi category sang đối tượng Category
-        };
-        axios.post('http://localhost:8080/saveProduct', productData)
-            .then(res => {
-                console.log(res);
-                navigate('/products');
-            })
-            .catch(err => console.log(err));
+
+        const formData = new FormData();
+        formData.append('file', selectedFile); // Thêm file ảnh vào formData
+        formData.append('productName', values.productName);
+        formData.append('description', values.description);
+        formData.append('price', values.price);
+        formData.append('category', values.category);
+
+        try {
+            const res = await axios.post('http://localhost:8080/saveProduct', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            console.log(res);
+            navigate('/products');
+        } catch (err) {
+            console.log(err);
+        }
     };
 
+    const handleFileChange = (event) => {
+        setSelectedFile(event.target.files[0]); // Lưu file ảnh được chọn vào state
+    };
+
+    const handleChange = (event) => {
+        setValues({ ...values, [event.target.name]: event.target.value });
+    };
 
     return (
         <div className='d-flex w-100 vh-100 justify-content-center align-items-center'>
-            <div className='w-50 border bg-secondary text-white p-5'>
+            <div className='w-50 border bg-secondary text-black p-5'>
                 <form onSubmit={handleSubmit}>
                     <h2>Thêm một sản phẩm</h2>
                     <div>
@@ -51,9 +66,7 @@ function Create() {
                             type='text'
                             name='productName'
                             className='form-control'
-                            onChange={(event) =>
-                                setValues({ ...values, [event.target.name]: event.target.value })
-                            }
+                            onChange={handleChange}
                         />
                     </div>
                     <div>
@@ -62,9 +75,7 @@ function Create() {
                             type='text'
                             name='description'
                             className='form-control'
-                            onChange={(event) =>
-                                setValues({ ...values, [event.target.name]: event.target.value })
-                            }
+                            onChange={handleChange}
                         />
                     </div>
                     <div>
@@ -73,9 +84,16 @@ function Create() {
                             type='number'
                             name='price'
                             className='form-control'
-                            onChange={(event) =>
-                                setValues({ ...values, [event.target.name]: event.target.value })
-                            }
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor='image'>Hình ảnh:</label>
+                        <input
+                            type='file'
+                            name='image'
+                            className='form-control'
+                            onChange={handleFileChange} // Thêm sự kiện để xử lý việc chọn file ảnh
                         />
                     </div>
                     <div>
@@ -83,9 +101,7 @@ function Create() {
                         <select
                             name='category'
                             className='form-control'
-                            onChange={(event) =>
-                                setValues({ ...values, [event.target.name]: event.target.value })
-                            }
+                            onChange={handleChange}
                         >
                             <option value=''>Chọn thể loại</option>
                             {categories.map((category) => (
