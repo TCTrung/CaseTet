@@ -4,9 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.HashSet;
-import java.util.Set;
+import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 @Data
@@ -63,4 +61,17 @@ public class Product {
     public void setCategory(Category category) {
         this.category = category;
     }
+
+    private String image;
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    @Transient
+    private MultipartFile file;
 }
