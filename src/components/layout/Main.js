@@ -89,9 +89,9 @@ const Main = () => {
               </div>
               <div className="row align-items-center py-3 px-xl-5">
                   <div className="col-lg-3 d-none d-lg-block">
-                      <a href="/home" className="text-decoration-none">
+                      <Link to="/" className="text-decoration-none">
                           <h1 className="m-0 display-5 font-weight-semi-bold"><span className="text-primary font-weight-bold border px-3 mr-1">T</span>Shop</h1>
-                      </a>
+                      </Link>
                   </div>
                   <div className="col-lg-6 col-6 text-left">
                           <div className="input-group">
@@ -232,7 +232,7 @@ const Main = () => {
                                   </div>
                               </div>
                               <div className="card-footer d-flex justify-content-between bg-light border">
-                                  <Link to={`/products/${product.id}`} className="btn btn-sm text-dark p-0"><i className="fas fa-eye text-primary mr-1" />View Detail</Link>
+                                  <Link to={`/home/products/${product.id}`} className="btn btn-sm text-dark p-0"><i className="fas fa-eye text-primary mr-1" />View Detail</Link>
                                   <button className="btn btn-sm text-dark p-0"><i className="fas fa-shopping-cart text-primary mr-1" />Add To Cart</button>
                               </div>
                           </div>
@@ -256,7 +256,8 @@ const Main = () => {
                       <p className="mb-0"><i className="fa fa-phone-alt text-primary mr-3" />+012 345 67890</p>
                   </div>
                   <div className="col-lg-8 col-md-12">
-                      <img src="/image/UnravelTwo.png" width={780} height={250} />
+                      <img src="C:\Users\Le Trinh\WebstormProjects\React\untitled1\src\components\layout\photos\wallhaven-2ywd3y_1920x1080.png" width={780} height={250} />
+
                   </div>
               </div>
               <div className="row border-top border-light mx-xl-5 py-4">

@@ -41,7 +41,7 @@ const CreateUser = () => {
 
   return (
       <div className='d-flex w-100 vh-100 justify-content-center align-items-center'>
-          <div className='w-50 border bg-secondary text-white p-5'>
+          <div className='w-50 border bg-secondary text-black p-5'>
               <form onSubmit={handleSubmit}>
                   <h2>Thêm một tài khoản</h2>
                   <div>

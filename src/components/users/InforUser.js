@@ -20,7 +20,7 @@ const InforUser = () => {
 
     return (
         <div className='d-flex w-100 vh-100 justify-content-center align-items-center'>
-            <div className='w-50 border bg-secondary text-white p-5'>
+            <div className='w-50 border bg-secondary text-black p-5'>
                 <h3>Thông tin tài khoản</h3>
                 <div className=' text-white'>
                     <div>

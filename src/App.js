@@ -13,6 +13,9 @@ import UserHome from "./components/users/UserHome";
 import CreateUser from "./components/users/CreateUser";
 import UpdateUser from "./components/users/UpdateUser";
 import InforUser from "./components/users/InforUser";
+import InforProduct from "./components/layout/InforProduct";
+import Register from "./components/layout/Register";
+import Login from "./components/layout/Login";
 
 function App() {
   return (
@@ -22,6 +25,9 @@ function App() {
 
           <Routes>
               <Route path='/' element={<Main/>}></Route>
+              <Route path='/home/products/:id' element={<InforProduct/>}></Route>
+              <Route path='/register' element={<Register/>}></Route>
+              <Route path='/login' element={<Login/>}></Route>
               <Route path='/products' element={<Home/>}></Route>
               <Route path='/products/create' element={<Create/>}></Route>
               <Route path='/products/update/:id' element={<Update/>}></Route>

@@ -33,8 +33,8 @@ const NavbarApp = () => {
                                 <NavDropdown.Item href="#action/3.2">
                                     Cart
                                 </NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.3">Login</NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.3">Register</NavDropdown.Item>
+                                <NavDropdown.Item href="/login">Login</NavDropdown.Item>
+                                <NavDropdown.Item href="/register">Register</NavDropdown.Item>
                                 <NavDropdown.Divider />
                                 <NavDropdown.Item href="#action/3.4">
                                     Log Out
